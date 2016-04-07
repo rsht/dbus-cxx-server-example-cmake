@@ -51,21 +51,11 @@ set(LIBS ${LIBS} ${DBUS_LIBRARIES})
 find_package(SigC++ REQUIRED)
 include_directories(SYSTEM ${SigC++_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${SigC++_LIBRARIES})
-message(depend: ${LIBS})
 
-
-# If dbus-cxx isn't required, then neither are its dependencies
-if(dbus-cxx_FIND_QUIETLY)
-    set(_FIND_FLAGS "QUIET")
-else()
-    set(_FIND_FLAGS "")
-endif()
 
 # Now let's find the dbus-cxx library
-find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
-    pkg_check_modules(_dbus-cxx_hint QUIET dbus-cxx)
-endif()
+find_package(PkgConfig)
+pkg_check_modules(_dbus-cxx_hint QUIET dbus-cxx)
 
 find_library(DBUS-CXX_LIBRARY
     NAMES
@@ -89,14 +79,14 @@ find_path(DBUS-CXX_INCLUDE_DIR
     PATHS
     ${DBUS-CXX_ROOT_DIR}
     PATH_SUFFIXES
-    dbus-cxx/
+    dbus-cxx-0.8
 )
 
 
 # handle the QUIETLY and REQUIRED arguments and set DBUS-CXX_FOUND to TRUE if
 # all listed variables are TRUE
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(DBUS-CXX
+find_package_handle_standard_args(dbus-cxx
     DEFAULT_MSG
     DBUS-CXX_LIBRARY
     DBUS-CXX_INCLUDE_DIR)
